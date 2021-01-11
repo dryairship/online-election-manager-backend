@@ -368,7 +368,7 @@ func SubmitSingleVoteResults(c *gin.Context) {
 		return
 	}
 
-	config.ElectionState = config.ResultsAvailable
+	config.ElectionState = config.ResultsCalculated
 	log.Println("[INFO] Results stored in the database")
 	c.String(http.StatusAccepted, "Results accepted.")
 }
@@ -424,7 +424,7 @@ func SubmitResults(c *gin.Context) {
 		return
 	}
 
-	config.ElectionState = config.ResultsAvailable
+	config.ElectionState = config.ResultsCalculated
 	log.Println("[INFO] Results stored in the database")
 	c.String(http.StatusAccepted, "Results accepted.")
 }

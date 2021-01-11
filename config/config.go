@@ -8,10 +8,10 @@ import (
 
 // Possible Election States
 const (
-	VotingNotYetStarted = iota
-	AcceptingVotes
-	VotingStopped
-	ResultsAvailable
+	VotingNotYetStarted = "VotingNotYetStarted"
+	AcceptingVotes      = "AcceptingVotes"
+	VotingStopped       = "VotingStopped"
+	ResultsCalculated   = "ResultsCalculated"
 )
 
 // Possible states for a candidate
@@ -23,7 +23,7 @@ const (
 
 // Global variables used by the program
 var (
-	ElectionState        int
+	ElectionState        string
 	ElectionName         string
 	MailSenderAuthID     string
 	MailSenderEmailID    string
@@ -38,6 +38,8 @@ var (
 	MongoPassword        string
 	AssetsPath           string
 	BallotIDsPath        string
+	ImagesPath           string
+	DataPath             string
 	ElectionDataFilePath string
 	ApplicationPort      string
 	SessionsKey          string
@@ -69,7 +71,7 @@ func InitializeConfiguration() {
 	case "VotingStopped":
 		ElectionState = VotingStopped
 	case "ResultsCalculated":
-		ElectionState = ResultsAvailable
+		ElectionState = ResultsCalculated
 	default:
 		log.Fatal("ElectionState should be one of {VotingNotYetStarted, AcceptingVotes, VotingStopped, ResultsCalculated}")
 	}
@@ -89,6 +91,8 @@ func InitializeConfiguration() {
 
 	AssetsPath = viper.GetString("AssetsPath")
 	BallotIDsPath = viper.GetString("BallotIDsPath")
+	ImagesPath = viper.GetString("ImagesPath")
+	DataPath = viper.GetString("DataPath")
 	ElectionDataFilePath = viper.GetString("ElectionDataFilePath")
 
 	ApplicationPort = viper.GetString("ApplicationPort")

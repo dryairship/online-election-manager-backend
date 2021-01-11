@@ -26,7 +26,7 @@ type (
 		PublicKey string
 		//PrivateKey string
 		Manifesto string
-		State     int
+		State     string
 		KeyState  int
 	}
 )

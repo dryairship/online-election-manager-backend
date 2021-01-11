@@ -79,7 +79,7 @@ func SubmitVote(c *gin.Context) {
 
 // API handler to fetch the current election state.
 func GetElectionState(c *gin.Context) {
-	c.String(http.StatusOK, string(48+config.ElectionState))
+	c.String(http.StatusOK, config.ElectionState)
 }
 
 func GetSingleVoteResults(c *gin.Context) {

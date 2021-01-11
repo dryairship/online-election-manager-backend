@@ -38,7 +38,7 @@ type (
 		BallotID []BallotID `json:"ballotIds"`
 		Voted    bool       `json:"voted"`
 		CEOKey   string     `json:"ceoKey"`
-		State    int        `json:"electionState"`
+		State    string     `json:"electionState"`
 		Posts    []string   `json:"posts"`
 	}
 )
