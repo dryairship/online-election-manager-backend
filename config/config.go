@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"os"
 
 	"github.com/spf13/viper"
 )
@@ -51,7 +52,7 @@ var (
 )
 
 // Method to read the values of the global variables from environment variables.
-func InitializeConfiguration() {
+func init() {
 	viper.SetConfigName("config-online-election-manager")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("/go")
@@ -101,4 +102,26 @@ func InitializeConfiguration() {
 
 	RollNumberOfCEO = viper.GetString("RollNumberOfCEO")
 	ElectionName = viper.GetString("ElectionName")
+
+	checkSanity()
+}
+
+func checkSanity() {
+	if err := exists(AssetsPath); err != nil {
+		log.Fatal("Error reading assets path:", err)
+	}
+	if err := exists(BallotIDsPath); err != nil {
+		log.Fatal("Error reading ballotids path")
+	}
+	if err := exists(DataPath); err != nil {
+		log.Fatal("Error reading data path")
+	}
+	if err := exists(ImagesPath); err != nil {
+		log.Fatal("Error reading images path")
+	}
+}
+
+func exists(path string) error {
+	_, err := os.OpenFile(path, os.O_RDONLY, 0)
+	return err
 }

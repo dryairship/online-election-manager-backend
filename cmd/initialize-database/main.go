@@ -29,8 +29,6 @@ type InitData struct {
 }
 
 func main() {
-	// Initialize the configuration from environment variables.
-	config.InitializeConfiguration()
 
 	// Connect to the database.
 	electionDb, err := db.ConnectToDatabase()
