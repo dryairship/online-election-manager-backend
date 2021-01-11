@@ -157,13 +157,6 @@ func CEOLogin(c *gin.Context) {
 
 // API handler to fetch all votes from the database.
 func FetchVotes(c *gin.Context) {
-	id, err := utils.GetSessionID(c)
-	if err != nil || id != "CEO" {
-		log.Println("[WARN] Unauthorized fetchVotes attempt: ", id, err.Error())
-		c.String(http.StatusForbidden, "Only the CEO can access this.")
-		return
-	}
-
 	if config.ElectionState != config.VotingStopped {
 		log.Println("[WARN] CEO tried to fetch votes before stopping voting")
 		c.String(http.StatusForbidden, "Please stop voting before fetching votes")
@@ -194,13 +187,6 @@ func isCandidateStillInRace(postId, username string) bool {
 
 // API handler to fetch all candidates from the database.
 func FetchCandidates(c *gin.Context) {
-	id, err := utils.GetSessionID(c)
-	if err != nil || id != "CEO" {
-		log.Println("[WARN] Unauthorized fetchCandidates attempt: ", id, err.Error())
-		c.String(http.StatusForbidden, "Only the CEO can access this.")
-		return
-	}
-
 	candidates, err := ElectionDb.GetAllCandidates()
 	if err != nil {
 		log.Println("[ERROR] Database error while fetching candidates: ", err.Error())
@@ -223,13 +209,6 @@ func FetchCandidates(c *gin.Context) {
 
 // API handler to fetch all posts from the database.
 func FetchPosts(c *gin.Context) {
-	id, err := utils.GetSessionID(c)
-	if err != nil || id != "CEO" {
-		log.Println("[WARN] Unauthorized fetchPosts attempt: ", id, err.Error())
-		c.String(http.StatusForbidden, "Only the CEO can access this.")
-		return
-	}
-
 	posts, err := ElectionDb.GetPostsForCEO()
 	if err != nil {
 		log.Println("[ERROR] Database error while fetching posts: ", err.Error())
@@ -241,13 +220,6 @@ func FetchPosts(c *gin.Context) {
 
 // API handler to start voting process by accepting CEO's public and private keys.
 func StartVoting(c *gin.Context) {
-	id, err := utils.GetSessionID(c)
-	if err != nil || id != "CEO" {
-		log.Println("[WARN] Unauthorized startVoting attempt: ", id, err.Error())
-		c.String(http.StatusForbidden, "Only the CEO can access this.")
-		return
-	}
-
 	if config.ElectionState != config.VotingNotYetStarted {
 		log.Println("[WARN] CEO tried to start voting, but voting has already started")
 		c.String(http.StatusBadRequest, "You are too late. Voting has already started.")
@@ -286,13 +258,6 @@ func StartVoting(c *gin.Context) {
 
 // API handler to stop voting process.
 func StopVoting(c *gin.Context) {
-	id, err := utils.GetSessionID(c)
-	if err != nil || id != "CEO" {
-		log.Println("[WARN] Unauthorized stopVoting attempt: ", id, err.Error())
-		c.String(http.StatusForbidden, "Only the CEO can access this.")
-		return
-	}
-
 	if config.ElectionState != config.AcceptingVotes {
 		log.Println("[WARN] CEO tried to stop voting but current state = ", config.ElectionState)
 		c.String(http.StatusBadRequest, "The system is already not accepting new votes.")
@@ -309,14 +274,7 @@ func ResultProgress(c *gin.Context) {
 }
 
 func PrepareForNextRound(c *gin.Context) {
-	id, err := utils.GetSessionID(c)
-	if err != nil || id != "CEO" {
-		log.Println("[WARN] Unauthorized prepareForNextRound attempt: ", id, err.Error())
-		c.String(http.StatusForbidden, "Only the CEO can access this.")
-		return
-	}
-
-	err = ElectionDb.MarkAllVotersUnvoted()
+	err := ElectionDb.MarkAllVotersUnvoted()
 	if err != nil {
 		log.Println("[ERROR] Database error while marking all voters unvoted: ", err.Error())
 		c.String(http.StatusInternalServerError, "Database Error")
@@ -337,15 +295,8 @@ func PrepareForNextRound(c *gin.Context) {
 }
 
 func SubmitSingleVoteResults(c *gin.Context) {
-	id, err := utils.GetSessionID(c)
-	if err != nil || id != "CEO" {
-		log.Println("[WARN] Unauthorized submitSingleVoteResults attempt: ", id, err.Error())
-		c.String(http.StatusForbidden, "Only the CEO can access this.")
-		return
-	}
-
 	var results singleVoteResultData
-	err = c.BindJSON(&results)
+	err := c.BindJSON(&results)
 	if err != nil {
 		log.Println("[ERROR] SingleVoteResults JSON did not bind to struct: ", err.Error())
 		c.String(http.StatusBadRequest, "Data format not recognized.")
@@ -423,15 +374,8 @@ func SubmitSingleVoteResults(c *gin.Context) {
 }
 
 func SubmitResults(c *gin.Context) {
-	id, err := utils.GetSessionID(c)
-	if err != nil || id != "CEO" {
-		log.Println("[WARN] Unauthorized submitResults attempt: ", id, err.Error())
-		c.String(http.StatusForbidden, "Only the CEO can access this.")
-		return
-	}
-
 	var results resultData
-	err = c.BindJSON(&results)
+	err := c.BindJSON(&results)
 	if err != nil {
 		log.Println("[ERROR] Results JSON did not bind to struct: ", err.Error())
 		c.String(http.StatusBadRequest, "Data format not recognized.")
