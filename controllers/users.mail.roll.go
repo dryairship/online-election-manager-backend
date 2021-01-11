@@ -24,7 +24,7 @@ func canMailBeSentToStudent(roll string) (bool, error) {
 	if err != nil {
 		return true, nil
 	} else {
-		if voter.AuthCode == "" {
+		if voter.Password != "" {
 			return false, &UserError{"Student has already registered."}
 		} else {
 			return false, &UserError{"Verification mail has already been sent to this student."}
@@ -108,15 +108,12 @@ func SendMailToCandidate(c *gin.Context) {
 	username := c.Param("roll")
 	candidate, err := ElectionDb.GetCandidate(username)
 	if err != nil {
-		c.String(http.StatusNotFound, "This candidate is not<br>contesting elections.")
+		c.String(http.StatusNotFound, "This candidate is not contesting elections.")
 		return
 	}
 
 	if candidate.Password != "" {
-		c.String(http.StatusForbidden, "This candidate has already<br>registered.")
-		return
-	} else if candidate.AuthCode != "" {
-		c.String(http.StatusForbidden, "Verification mail has already<br>been sent to this candidate.")
+		c.String(http.StatusForbidden, "This candidate has already registered.")
 		return
 	}
 
@@ -136,7 +133,7 @@ func SendMailToCandidate(c *gin.Context) {
 		return
 	}
 
-	c.String(http.StatusAccepted, "Verification Mail successfully sent<br>to "+candidate.Email)
+	c.String(http.StatusAccepted, "Verification Mail successfully sent to "+candidate.Email)
 }
 
 // API handler to send verification mail to CEO.

@@ -28,7 +28,7 @@ func RegisterNewVoter(c *gin.Context) {
 		return
 	}
 
-	if voter.AuthCode == "" {
+	if voter.Password != "" {
 		log.Println("[WARN] Re-registration attempt: ", voter)
 		c.String(http.StatusForbidden, "Student has already registered.")
 		return
@@ -46,7 +46,6 @@ func RegisterNewVoter(c *gin.Context) {
 	}
 
 	voter.Password = passHash
-	voter.AuthCode = ""
 
 	err = ElectionDb.UpdateVoter(roll, &voter)
 	if err != nil {
@@ -74,7 +73,7 @@ func RegisterCandidate(c *gin.Context) {
 		c.String(http.StatusForbidden, "Candidate has already registered.")
 		return
 	} else if candidate.AuthCode == "" {
-		c.String(http.StatusForbidden, "You need to get a verification<br>mail before you register.")
+		c.String(http.StatusForbidden, "You need to get a verification mail before you register.")
 		return
 	}
 
@@ -89,7 +88,6 @@ func RegisterCandidate(c *gin.Context) {
 	}
 
 	candidate.Password = passHash
-	candidate.AuthCode = ""
 
 	err = ElectionDb.UpdateCandidate(username, &candidate)
 	if err != nil {
@@ -111,7 +109,7 @@ func RegisterCEO(c *gin.Context) {
 		return
 	}
 
-	if ceo.AuthCode == "" {
+	if ceo.Password != "" {
 		log.Println("[WARN] CEO tried to re-register")
 		c.String(http.StatusForbidden, "CEO has already registered.")
 		return
@@ -123,7 +121,6 @@ func RegisterCEO(c *gin.Context) {
 	}
 
 	ceo.Password = passHash
-	ceo.AuthCode = ""
 
 	err = ElectionDb.UpdateCEO(&ceo)
 	if err != nil {
