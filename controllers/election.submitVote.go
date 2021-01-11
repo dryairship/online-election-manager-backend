@@ -7,20 +7,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"github.com/dryairship/online-election-manager/config"
 	"github.com/dryairship/online-election-manager/models"
 	"github.com/dryairship/online-election-manager/utils"
 )
 
 // API handler to store the submitted vote.
 func SubmitVote(c *gin.Context) {
-	roll, err := utils.GetSessionID(c)
-	if err != nil {
-		log.Println("[WARN] Unauthorized vote submission attempt: ", err.Error())
-		c.String(http.StatusForbidden, "Unauthorized vote submission.")
-		return
-	}
-
+	roll := c.GetString("ID")
 	voter, err := ElectionDb.FindVoter(roll)
 	if err != nil {
 		log.Println("[ERROR] Voter not found in db while submitting vote: ", roll, err.Error())
@@ -75,31 +68,4 @@ func SubmitVote(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, "Votes successfully submitted.")
-}
-
-// API handler to fetch the current election state.
-func GetElectionState(c *gin.Context) {
-	c.String(http.StatusOK, config.ElectionState)
-}
-
-func GetSingleVoteResults(c *gin.Context) {
-	result, err := ElectionDb.FindAllSingleVoteResults()
-	if err != nil {
-		log.Println("[ERROR] Could not get single vote results from db: ", err.Error())
-		c.String(http.StatusInternalServerError, "Database Error")
-		return
-	}
-
-	c.JSON(http.StatusOK, result)
-}
-
-func GetResults(c *gin.Context) {
-	result, err := ElectionDb.FindAllResults()
-	if err != nil {
-		log.Println("[ERROR] Could not get results from db: ", err.Error())
-		c.String(http.StatusInternalServerError, "Database Error")
-		return
-	}
-
-	c.JSON(http.StatusOK, result)
 }

@@ -14,34 +14,32 @@ func SetUpRoutes(r *gin.Engine) {
 	users := r.Group("/users")
 	{
 		//users.POST("/mail/:roll", controllers.SendMailToStudent)
-		users.POST("/register", controllers.RegisterNewVoter)
-		users.POST("/login", controllers.CheckUserLogin)
+		users.POST("/register", controllers.EnsureBeforeVotingStopped(), controllers.RegisterNewVoter)
+		users.POST("/login", controllers.EnsureAfterVotingStarted(), controllers.CheckUserLogin)
 		users.GET("/captcha", controllers.GetCaptcha)
 	}
 
 	election := r.Group("/election")
 	{
-		election.GET("/getVotablePosts", controllers.GetVotablePosts)
-		//election.GET("/getCandidateCard/:username", controllers.GetCandidateCard)
+		//election.GET("/getVotablePosts", controllers.EnsureVotingStarted(), controllers.EnsureLoggedIn(), controllers.GetVotablePosts)
 		//election.GET("/getCandidateInfo/:username", controllers.GetCandidateInfo)
 		election.GET("/getElectionState", controllers.GetElectionState)
-		election.POST("/submitVote", controllers.SubmitVote)
+		election.POST("/submitVote", controllers.EnsureVotingStarted(), controllers.EnsureLoggedIn(), controllers.SubmitVote)
 		//election.GET("/singleVoteResults", controllers.GetSingleVoteResults)
-		election.GET("/results", controllers.GetResults)
+		election.GET("/results", controllers.EnsureResultsCalculated(), controllers.GetResults)
 	}
 
 	ceo := r.Group("/ceo")
-	ceo.Use(controllers.AuthenticationMiddleware())
-	ceo.Use(controllers.CEOMiddleware())
+	ceo.Use(controllers.EnsureLoggedIn())
+	ceo.Use(controllers.EnsureCEO())
 	{
-		ceo.POST("/startVoting", controllers.StartVoting)
-		ceo.POST("/stopVoting", controllers.StopVoting)
-		ceo.GET("/fetchPosts", controllers.FetchPosts)
-		ceo.GET("/fetchVotes", controllers.FetchVotes)
-		ceo.GET("/fetchCandidates", controllers.FetchCandidates)
-		//ceo.GET("/resultProgress", controllers.ResultProgress)
+		ceo.POST("/startVoting", controllers.EnsureVotingNotYetStarted(), controllers.StartVoting)
+		ceo.POST("/stopVoting", controllers.EnsureVotingStarted(), controllers.StopVoting)
+		ceo.GET("/fetchPosts", controllers.EnsureVotingStopped(), controllers.FetchPosts)
+		ceo.GET("/fetchVotes", controllers.EnsureVotingStopped(), controllers.FetchVotes)
+		ceo.GET("/fetchCandidates", controllers.EnsureVotingStopped(), controllers.FetchCandidates)
 		//ceo.POST("/submitSingleVoteResults", controllers.SubmitSingleVoteResults)
-		ceo.POST("/submitResults", controllers.SubmitResults)
+		ceo.POST("/submitResults", controllers.EnsureVotingStopped(), controllers.SubmitResults)
 		//ceo.POST("/prepareForNextRound", controllers.PrepareForNextRound)
 	}
 
