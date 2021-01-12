@@ -3,14 +3,14 @@ package models
 type (
 	// Basic structure of a vote as stored in the database.
 	Vote struct {
-		PostID string `json:"postid"`
+		PostID string `json:"postId"`
 		Data   string `json:"data"`
 	}
 
 	// Basic structure of a parsed vote as stored in the database.
 	ParsedVote struct {
-		PostID      string `json:"postid"`
-		BallotID    string `json:"ballotid"`
+		PostID      string `json:"postId"`
+		BallotID    string `json:"ballotId"`
 		Preference1 string `json:"preference1"`
 		Preference2 string `json:"preference2"`
 		Preference3 string `json:"preference3"`
@@ -18,21 +18,21 @@ type (
 
 	// Struct to represent the received Ballot ID.
 	BallotID struct {
-		PostID       string
-		BallotString string
+		PostID       string `json:"postId"`
+		BallotString string `json:"ballotString"`
 	}
 
 	// Struct to represent the received vote from the user.
 	ReceivedVote struct {
-		PostID       string `json:"PostID"`
-		BallotString string `json:"BallotString"`
-		VoteData     string `json:"VoteData"`
+		PostID       string `json:"postId"`
+		BallotString string `json:"ballotString"`
+		VoteData     string `json:"voteData"`
 	}
 
 	UsedSingleVoteBallotID struct {
-		BallotString string
-		Roll         string
-		Name         string
+		BallotString string `json:"ballotString"`
+		Roll         string `json:"roll"`
+		Name         string `json:"name"`
 	}
 
 	UsedBallotID struct {

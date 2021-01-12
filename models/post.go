@@ -3,9 +3,8 @@ package models
 type (
 	// Basic structure of the posts as stored in the database.
 	Post struct {
-		PostID     string   `json:"postid"`
-		PostName   string   `json:"postname"`
-		VoterRegex string   `json:"regex"`
+		PostID     string   `json:"postId"`
+		PostName   string   `json:"postName"`
 		Candidates []string `json:"candidates"`
 		Resolved   bool     `json:"resolved"`
 		HasNota    bool     `json:"hasNota"`
@@ -13,10 +12,10 @@ type (
 
 	// Structure of posts returned by the appropriate API call.
 	VotablePost struct {
-		PostID     string
-		PostName   string
-		Candidates []string
-		HasNota    bool
+		PostID     string   `json:"postId"`
+		PostName   string   `json:"postName"`
+		Candidates []string `json:"candidates"`
+		HasNota    bool     `json:"hasNota"`
 	}
 )
 

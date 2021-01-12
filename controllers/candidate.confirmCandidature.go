@@ -12,8 +12,8 @@ import (
 
 // Struct to accept new keys from the client.
 type confirmCandidature_Keys struct {
-	PublicKey  string `json:"pubkey"`
-	PrivateKey string `json:"privkey"`
+	PublicKey  string `json:"publicKey"`
+	PrivateKey string `json:"privateKey"`
 }
 
 // API handler to confirm candidature by updating the public and private keys of a candidate.

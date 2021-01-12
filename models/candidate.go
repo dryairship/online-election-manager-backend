@@ -11,23 +11,23 @@ type (
 		Username   string `json:"username"`
 		Password   string `json:"password"`
 		AuthCode   string `json:"authcode"`
-		PostID     string `json:"postid"`
+		PostID     string `json:"postId"`
 		Manifesto  string `json:"manifesto"`
-		PublicKey  string `json:"publickey"`
-		PrivateKey string `json:"privatekey"`
-		KeyState   int    `json:"keystate"`
+		PublicKey  string `json:"publicKey"`
+		PrivateKey string `json:"privateKey"`
+		KeyState   int    `json:"keyState"`
 	}
 
 	// The object description that is returned through API calls.
 	SimplifiedCandidate struct {
-		Roll      string
-		Username  string
-		Name      string
-		PublicKey string
-		//PrivateKey string
-		Manifesto string
-		State     string
-		KeyState  int
+		Roll      string `json:"roll"`
+		Username  string `json:"username"`
+		Name      string `json:"name"`
+		PublicKey string `json:"publicKey"`
+		//PrivateKey string `json:"privateKey"`
+		Manifesto string `json:"manifesto"`
+		State     string `json:"state"`
+		KeyState  int    `json:"keyState"`
 	}
 )
 
