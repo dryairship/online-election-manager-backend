@@ -40,7 +40,8 @@ var (
 	AssetsPath           string
 	BallotIDsPath        string
 	ImagesPath           string
-	DataPath             string
+	VotersListPath       string
+	CandidatesOutputPath string
 	ElectionDataFilePath string
 	ApplicationPort      string
 	SessionsKey          string
@@ -93,7 +94,8 @@ func init() {
 	AssetsPath = viper.GetString("AssetsPath")
 	BallotIDsPath = viper.GetString("BallotIDsPath")
 	ImagesPath = viper.GetString("ImagesPath")
-	DataPath = viper.GetString("DataPath")
+	VotersListPath = viper.GetString("VotersListPath")
+	CandidatesOutputPath = viper.GetString("CandidatesOutputPath")
 	ElectionDataFilePath = viper.GetString("ElectionDataFilePath")
 
 	ApplicationPort = viper.GetString("ApplicationPort")
@@ -113,8 +115,8 @@ func checkSanity() {
 	if err := exists(BallotIDsPath); err != nil {
 		log.Fatal("Error reading ballotids path")
 	}
-	if err := exists(DataPath); err != nil {
-		log.Fatal("Error reading data path")
+	if err := exists(CandidatesOutputPath); err != nil {
+		log.Fatal("Error reading candidates output path")
 	}
 	if err := exists(ImagesPath); err != nil {
 		log.Fatal("Error reading images path")

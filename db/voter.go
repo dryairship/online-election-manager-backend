@@ -58,3 +58,26 @@ func (db ElectionDatabase) MarkAllVotersUnvoted() error {
 	)
 	return err
 }
+
+func (db ElectionDatabase) ClearPostsForAllVoters() error {
+	emptyArray := make([]string, 0)
+	_, err := db.VotersCollection.UpdateMany(
+		context.Background(),
+		bson.M{},
+		bson.M{"$set": bson.M{
+			"posts": emptyArray,
+		}},
+	)
+	return err
+}
+
+func (db ElectionDatabase) SetPostsForVoter(roll string, posts []string) error {
+	_, err := db.VotersCollection.UpdateOne(
+		context.Background(),
+		bson.M{"roll": roll},
+		bson.M{"$set": bson.M{
+			"posts": posts,
+		}},
+	)
+	return err
+}

@@ -52,6 +52,6 @@ func SetUpRoutes(r *gin.Engine) {
 	// To directly serve static files in the AssetsPath directory.
 	r.Use(static.Serve("/ballotids/", static.LocalFile(config.BallotIDsPath, true)))
 	r.Use(static.Serve("/images/", static.LocalFile(config.ImagesPath, true)))
-	r.Use(static.Serve("/data/", static.LocalFile(config.DataPath, true))) // for /data/candidates
+	r.Use(static.Serve("/data/", static.LocalFile(config.CandidatesOutputPath, true))) // for /data/candidates
 	// r.Use(static.Serve("/", static.LocalFile(config.AssetsPath, true)))
 }
