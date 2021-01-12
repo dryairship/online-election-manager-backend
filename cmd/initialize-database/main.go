@@ -12,6 +12,7 @@ import (
 type InitPost struct {
 	Id         string
 	Name       string
+	HasNota    bool
 	Candidates []string
 }
 

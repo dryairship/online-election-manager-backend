@@ -19,6 +19,7 @@ type jsonCandidate struct {
 type jsonPost struct {
 	Id         string          `json:"postId"`
 	Name       string          `json:"postName"`
+	HasNota    bool            `json:"hasNota"`
 	Candidates []jsonCandidate `json:"candidates"`
 }
 
@@ -57,12 +58,14 @@ func AddToDb(data InitData) []jsonPost {
 			PostName:   post.Name,
 			Candidates: candidatesUsernames,
 			Resolved:   false,
+			HasNota:    post.HasNota,
 		}
 
 		result[i] = jsonPost{
 			Id:         post.Id,
 			Name:       post.Name,
 			Candidates: jsonCands,
+			HasNota:    post.HasNota,
 		}
 
 		// Insert the newly created post into the database.

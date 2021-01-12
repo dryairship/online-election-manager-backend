@@ -8,6 +8,7 @@ type (
 		VoterRegex string   `json:"regex"`
 		Candidates []string `json:"candidates"`
 		Resolved   bool     `json:"resolved"`
+		HasNota    bool     `json:"hasNota"`
 	}
 
 	// Structure of posts returned by the appropriate API call.
@@ -15,6 +16,7 @@ type (
 		PostID     string
 		PostName   string
 		Candidates []string
+		HasNota    bool
 	}
 )
 
@@ -24,5 +26,6 @@ func (post Post) ConvertToVotablePost() VotablePost {
 		PostID:     post.PostID,
 		PostName:   post.PostName,
 		Candidates: post.Candidates,
+		HasNota:    post.HasNota,
 	}
 }
