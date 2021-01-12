@@ -35,6 +35,21 @@ func SubmitVote(c *gin.Context) {
 		return
 	}
 
+	for _, receivedVote := range receivedVotes {
+		isAllowed := false
+		for _, pId := range voter.Posts {
+			if pId == receivedVote.PostID {
+				isAllowed = true
+				break
+			}
+		}
+		if !isAllowed {
+			log.Printf("[WARN] Voter <%s> wrongly tried to vote on post <%s>\n", voter.Roll, receivedVote.PostID)
+			c.String(http.StatusForbidden, "This voter is not allowed to vote for post "+receivedVote.PostID)
+			return
+		}
+	}
+
 	ballotID := make([]models.BallotID, len(receivedVotes))
 	for i, receivedVote := range receivedVotes {
 		ballotID[i] = receivedVote.GetBallotID()

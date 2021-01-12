@@ -1,7 +1,5 @@
 package models
 
-import "fmt"
-
 type (
 	// Basic structure of a vote as stored in the database.
 	Vote struct {
@@ -26,7 +24,7 @@ type (
 
 	// Struct to represent the received vote from the user.
 	ReceivedVote struct {
-		PostID       int    `json:"PostID"`
+		PostID       string `json:"PostID"`
 		BallotString string `json:"BallotString"`
 		VoteData     string `json:"VoteData"`
 	}
@@ -48,7 +46,7 @@ type (
 // Function to get the actual data of the vote from it.
 func (receivedVote ReceivedVote) GetVote() Vote {
 	return Vote{
-		PostID: fmt.Sprintf("%d", receivedVote.PostID),
+		PostID: receivedVote.PostID,
 		Data:   receivedVote.VoteData,
 	}
 }
@@ -56,7 +54,7 @@ func (receivedVote ReceivedVote) GetVote() Vote {
 // Function to get the ballot ID fron a vote.
 func (receivedVote ReceivedVote) GetBallotID() BallotID {
 	return BallotID{
-		PostID:       fmt.Sprintf("%d", receivedVote.PostID),
+		PostID:       receivedVote.PostID,
 		BallotString: receivedVote.BallotString,
 	}
 }
