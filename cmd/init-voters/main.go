@@ -101,4 +101,15 @@ func createVoters(voterRolls []string) {
 		}
 	}
 	log.Println("Added voters.")
+
+	skeleton, err := electionDb.FindStudentSkeleton(config.RollNumberOfCEO)
+	if err != nil {
+		log.Println("[ERROR] No CEO in the database")
+		return
+	}
+	ceo := skeleton.CreateCEO("")
+	err = electionDb.InsertCEO(&ceo)
+	if err != nil {
+		log.Println("Could not add CEO")
+	}
 }
