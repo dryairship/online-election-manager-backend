@@ -24,7 +24,9 @@ type InitData struct {
 }
 
 func main() {
+	log.Println("Reading voters lists...")
 	allVoters := readVotersLists()
+	log.Println("Adding voters to db...")
 	createVoters(allVoters)
 }
 
@@ -76,7 +78,7 @@ func getVotersForPost(id string) []string {
 	if err := scanner.Err(); err != nil {
 		log.Fatalf("Error while scanning voters list for post <%s>: %s", id, err.Error())
 	}
-
+	log.Println("Successfully read", id, ".txt")
 	return allVoters
 }
 
@@ -92,6 +94,11 @@ func createVoters(voterRolls []string) {
 			log.Println(roll, "not found.")
 			continue
 		}
-		skeleton.CreateVoter("")
+		voter := skeleton.CreateVoter("")
+		err = electionDb.AddNewVoter(&voter)
+		if err != nil {
+			log.Println("Could not add", roll)
+		}
 	}
+	log.Println("Added voters.")
 }
