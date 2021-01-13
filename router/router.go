@@ -15,7 +15,7 @@ func SetUpRoutes(r *gin.Engine) {
 	{
 		//users.POST("/mail/:roll", controllers.SendMailToStudent)
 		users.POST("/register", controllers.EnsureBeforeVotingStopped(), controllers.RegisterNewVoter)
-		users.POST("/login", controllers.EnsureAfterVotingStarted(), controllers.CheckUserLogin)
+		users.POST("/login", controllers.CheckUserLogin)
 		users.GET("/captcha", controllers.GetCaptcha)
 	}
 

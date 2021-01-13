@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/dryairship/online-election-manager/config"
 	"github.com/dryairship/online-election-manager/utils"
 )
 
@@ -21,6 +22,11 @@ func CheckUserLogin(c *gin.Context) {
 
 	if roll[0] == 'P' {
 		CandidateLogin(c)
+		return
+	}
+
+	if config.ElectionState == config.VotingNotYetStarted {
+		c.String(http.StatusForbidden, "Voting has not yet started.")
 		return
 	}
 
