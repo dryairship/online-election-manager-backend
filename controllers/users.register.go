@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+
+	"github.com/dryairship/online-election-manager/utils"
 )
 
 func RegisterNewVoter(c *gin.Context) {
@@ -34,7 +36,7 @@ func RegisterNewVoter(c *gin.Context) {
 		return
 	}
 
-	if voter.AuthCode != authCode {
+	if !utils.IsAuthCodeValid(authCode, voter.AuthCode) {
 		c.String(http.StatusBadRequest, "Wrong authentication code.")
 		return
 	}
@@ -77,7 +79,7 @@ func RegisterCandidate(c *gin.Context) {
 		return
 	}
 
-	if candidate.AuthCode != authCode {
+	if !utils.IsAuthCodeValid(authCode, candidate.AuthCode) {
 		c.String(http.StatusBadRequest, "Wrong authentication code.")
 		return
 	}
@@ -115,7 +117,7 @@ func RegisterCEO(c *gin.Context) {
 		return
 	}
 
-	if ceo.AuthCode != authCode {
+	if !utils.IsAuthCodeValid(authCode, ceo.AuthCode) {
 		c.String(http.StatusBadRequest, "Wrong authentication code.")
 		return
 	}

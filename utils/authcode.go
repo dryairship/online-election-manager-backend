@@ -53,8 +53,11 @@ func EncryptAuthCode(key, message string) (string, error) {
 }
 
 func IsAuthCodeValid(key, encryptedText string) bool {
+	text, err := base64.StdEncoding.DecodeString(encryptedText)
+	if err != nil {
+		return false
+	}
 	k := get32SizeKey(key)
-	text := []byte(encryptedText)
 	block, err := aes.NewCipher(k)
 	if err != nil {
 		return false
