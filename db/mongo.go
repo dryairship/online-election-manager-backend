@@ -30,13 +30,23 @@ type ElectionDatabase struct {
 
 // Function to establish database connection.
 func ConnectToDatabase() (ElectionDatabase, error) {
-	connectURL := fmt.Sprintf(
-		"mongodb://%s:%s@%s/%s",
-		url.QueryEscape(config.MongoUsername),
-		url.QueryEscape(config.MongoPassword),
-		config.MongoDialURL,
-		config.MongoDbName,
-	)
+	var connectURL string
+
+	if config.MongoUsingAuth {
+		connectURL = fmt.Sprintf(
+			"mongodb://%s:%s@%s/%s",
+			url.QueryEscape(config.MongoUsername),
+			url.QueryEscape(config.MongoPassword),
+			config.MongoDialURL,
+			config.MongoDbName,
+		)
+	} else {
+		connectURL = fmt.Sprintf(
+			"mongodb://%s/%s",
+			config.MongoDialURL,
+			config.MongoDbName,
+		)
+	}
 
 	var electionDb ElectionDatabase
 

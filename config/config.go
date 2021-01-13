@@ -36,6 +36,7 @@ var (
 	MongoDialURL         string
 	MongoDbName          string
 	MongoUsername        string
+	MongoUsingAuth       bool
 	MongoPassword        string
 	AssetsPath           string
 	BallotIDsPath        string
@@ -90,6 +91,7 @@ func init() {
 	MongoDbName = viper.GetString("MongoDbName")
 	MongoUsername = viper.GetString("MongoUsername")
 	MongoPassword = viper.GetString("MongoPassword")
+	MongoUsingAuth = viper.GetBool("MongoUsingAuth")
 
 	AssetsPath = viper.GetString("AssetsPath")
 	BallotIDsPath = viper.GetString("BallotIDsPath")
