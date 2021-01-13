@@ -11,8 +11,6 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-const letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-
 // Function to return a random string to be used as authentication code.
 func GetRandomAuthCode() string {
 	b := make([]byte, 6)
