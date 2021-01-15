@@ -30,7 +30,7 @@ func SubmitVote(c *gin.Context) {
 	var receivedVotes []models.ReceivedVote
 	err = c.BindJSON(&receivedVotes)
 	if err != nil {
-		log.Println("[ERROR] Vote JSON could not bind to struct: ", voter, err.Error())
+		log.Println("[ERROR] Vote JSON could not bind to struct: ", voter.Roll, err.Error())
 		c.String(http.StatusBadRequest, "Data format not recognized.")
 		return
 	}
@@ -73,6 +73,7 @@ func SubmitVote(c *gin.Context) {
 		AuthCode: voter.AuthCode,
 		BallotID: ballotID,
 		Voted:    true,
+		Posts:    voter.Posts,
 	}
 
 	err = ElectionDb.UpdateVoter(roll, &newVoter)
