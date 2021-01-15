@@ -13,6 +13,14 @@ func RegisterNewVoter(c *gin.Context) {
 	roll := c.PostForm("roll")
 	passHash := c.PostForm("pass")
 	authCode := c.PostForm("auth")
+	captchaId := c.PostForm("captchaId")
+	captchaValue := c.PostForm("captchaValue")
+
+	captchaSuccess := utils.VerifyCaptcha(captchaId, captchaValue)
+	if !captchaSuccess {
+		c.String(http.StatusBadRequest, "Incorrect CAPTCHA")
+		return
+	}
 
 	if roll == "CEO" {
 		RegisterCEO(c)

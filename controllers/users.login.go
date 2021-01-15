@@ -14,6 +14,14 @@ import (
 func CheckUserLogin(c *gin.Context) {
 	roll := c.PostForm("roll")
 	passHash := c.PostForm("pass")
+	captchaId := c.PostForm("captchaId")
+	captchaValue := c.PostForm("captchaValue")
+
+	captchaSuccess := utils.VerifyCaptcha(captchaId, captchaValue)
+	if !captchaSuccess {
+		c.String(http.StatusBadRequest, "Incorrect CAPTCHA")
+		return
+	}
 
 	if roll == "CEO" {
 		CEOLogin(c)
