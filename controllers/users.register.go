@@ -13,8 +13,10 @@ func RegisterNewVoter(c *gin.Context) {
 	roll := c.PostForm("roll")
 	passHash := c.PostForm("pass")
 	authCode := c.PostForm("auth")
+	sha1Code := c.PostForm("sha1")
 	captchaId := c.PostForm("captchaId")
 	captchaValue := c.PostForm("captchaValue")
+	passXac := c.PostForm("passXac")
 
 	captchaSuccess := utils.VerifyCaptcha(captchaId, captchaValue)
 	if !captchaSuccess {
@@ -56,6 +58,8 @@ func RegisterNewVoter(c *gin.Context) {
 	}
 
 	voter.Password = passHash
+	voter.SHA1 = sha1Code
+	voter.PassXac = passXac
 
 	err = ElectionDb.UpdateVoter(roll, &voter)
 	if err != nil {

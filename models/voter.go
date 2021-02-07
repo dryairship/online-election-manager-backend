@@ -15,6 +15,8 @@ type (
 		BallotID []BallotID `json:"ballotIds"`
 		Voted    bool       `json:"voted"`
 		Posts    []string   `json:"posts"`
+		SHA1     string     `json:"sha1"`
+		PassXac  string     `json:"passXac"`
 	}
 
 	// Struct to represent all the data required to send mail to a user.
@@ -63,6 +65,8 @@ func (skeleton StudentSkeleton) CreateVoter(authcode string) Voter {
 		BallotID: nil,
 		Voted:    false,
 		Posts:    nil,
+		SHA1:     "",
+		PassXac:  "",
 	}
 }
 

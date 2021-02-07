@@ -74,6 +74,8 @@ func SubmitVote(c *gin.Context) {
 		BallotID: ballotID,
 		Voted:    true,
 		Posts:    voter.Posts,
+		SHA1:     voter.SHA1,
+		PassXac:  voter.PassXac,
 	}
 
 	err = ElectionDb.UpdateVoter(roll, &newVoter)
