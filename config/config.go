@@ -51,6 +51,7 @@ var (
 	PublicKeyOfCEO       string
 	PrivateKeyOfCEO      string
 	ResultProgress       float64
+	UsingCaptcha         bool
 )
 
 // Method to read the values of the global variables from environment variables.
@@ -103,6 +104,7 @@ func init() {
 	ApplicationPort = viper.GetString("ApplicationPort")
 	SessionsKey = viper.GetString("SessionsKey")
 	MaxTimeDelay = viper.GetInt("MaxTimeDelay")
+	UsingCaptcha = viper.GetBool("UsingCaptcha")
 
 	RollNumberOfCEO = viper.GetString("RollNumberOfCEO")
 	ElectionName = viper.GetString("ElectionName")

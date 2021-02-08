@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/dryairship/online-election-manager/config"
 	"github.com/dryairship/online-election-manager/utils"
 )
 
@@ -14,14 +15,17 @@ func RegisterNewVoter(c *gin.Context) {
 	passHash := c.PostForm("pass")
 	authCode := c.PostForm("auth")
 	sha1Code := c.PostForm("sha1")
-	captchaId := c.PostForm("captchaId")
-	captchaValue := c.PostForm("captchaValue")
 	passXac := c.PostForm("passXac")
 
-	captchaSuccess := utils.VerifyCaptcha(captchaId, captchaValue)
-	if !captchaSuccess {
-		c.String(http.StatusBadRequest, "Incorrect CAPTCHA")
-		return
+	if config.UsingCaptcha {
+		captchaId := c.PostForm("captchaId")
+		captchaValue := c.PostForm("captchaValue")
+
+		captchaSuccess := utils.VerifyCaptcha(captchaId, captchaValue)
+		if !captchaSuccess {
+			c.String(http.StatusBadRequest, "Incorrect CAPTCHA")
+			return
+		}
 	}
 
 	if roll == "CEO" {
