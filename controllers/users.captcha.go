@@ -14,7 +14,13 @@ type CAPTCHA struct {
 }
 
 func GetCaptcha(c *gin.Context) {
-	id, value := utils.CreateCaptcha()
+	id, value, err := utils.CreateCaptcha()
+
+	if err != nil {
+		c.AbortWithStatus(500)
+		return
+	}
+
 	captcha := CAPTCHA{
 		Id:    id,
 		Value: value,
