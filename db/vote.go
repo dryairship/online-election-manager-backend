@@ -15,6 +15,11 @@ func (db ElectionDatabase) InsertVote(vote *models.Vote) error {
 	return err
 }
 
+func (db ElectionDatabase) InsertVotes(votes []models.Vote) error {
+	_, err := db.VotesCollection.InsertMany(context.Background(), ToInterfaceArray(votes))
+	return err
+}
+
 // Function to insert a new parsed vote into the database.
 // TODO
 func (db ElectionDatabase) InsertParsedVote(parsedVote *models.ParsedVote) error {

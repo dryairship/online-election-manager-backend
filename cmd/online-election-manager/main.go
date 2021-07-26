@@ -10,11 +10,12 @@ import (
 	"github.com/dryairship/online-election-manager/config"
 	_ "github.com/dryairship/online-election-manager/controllers"
 	"github.com/dryairship/online-election-manager/router"
-	_ "github.com/dryairship/online-election-manager/utils"
+	"github.com/dryairship/online-election-manager/utils"
 )
 
 func main() {
-	sessionDb := cookie.NewStore([]byte(config.SessionsKey))
+	sessionKey := utils.GetRandomString(32)
+	sessionDb := cookie.NewStore([]byte(sessionKey))
 
 	r := gin.Default()
 	r.Use(sessions.Sessions("SessionData", sessionDb))

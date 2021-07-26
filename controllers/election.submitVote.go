@@ -3,12 +3,10 @@ package controllers
 import (
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/gin-gonic/gin"
 
 	"github.com/dryairship/online-election-manager/models"
-	"github.com/dryairship/online-election-manager/utils"
 )
 
 // API handler to store the submitted vote.
@@ -51,18 +49,16 @@ func SubmitVote(c *gin.Context) {
 	}
 
 	ballotID := make([]models.BallotID, len(receivedVotes))
+	dbVotes := make([]models.Vote, len(receivedVotes))
 	for i, receivedVote := range receivedVotes {
 		ballotID[i] = receivedVote.GetBallotID()
-		vote := receivedVote.GetVote()
-
-		// Insert the vote after a random time delay.
-		go func(vote models.Vote, voter models.Voter) {
-			time.Sleep(utils.GetRandomTimeDelay())
-			err := ElectionDb.InsertVote(&vote)
-			if err != nil {
-				log.Println("[ERROR] Vote could not be inserted in the database: ", voter, err.Error())
-			}
-		}(vote, voter)
+		dbVotes[i] = receivedVote.GetVote()
+	}
+	err = ElectionDb.InsertVotes(dbVotes)
+	if err != nil {
+		log.Println("[ERROR] Votes could not be inserted in the database: ", voter, err.Error())
+		c.String(http.StatusInternalServerError, "Database Error")
+		return
 	}
 
 	newVoter := models.Voter{

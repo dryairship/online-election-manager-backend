@@ -22,43 +22,31 @@ const (
 	KeysDeclared
 )
 
-// Global variables used by the program
+// Global variables read from config file
 var (
 	ElectionState        string
-	ElectionName         string
-	MailSenderAuthID     string
-	MailSenderEmailID    string
-	MailSenderPassword   string
-	MailSignature        string
-	MailSMTPHost         string
-	MailSMTPPort         string
 	MailSuffix           string
 	MongoDialURL         string
 	MongoDbName          string
 	MongoUsername        string
 	MongoUsingAuth       bool
 	MongoPassword        string
-	AssetsPath           string
 	BallotIDsPath        string
-	ImagesPath           string
 	VotersListPath       string
 	CandidatesOutputPath string
 	ElectionDataFilePath string
 	ApplicationPort      string
-	SessionsKey          string
-	MaxTimeDelay         int
 	RollNumberOfCEO      string
-	PublicKeyOfCEO       string
-	PrivateKeyOfCEO      string
-	ResultProgress       float64
 	UsingCaptcha         bool
 )
+
+// Global variable not read from config file
+var PublicKeyOfCEO string
 
 // Method to read the values of the global variables from environment variables.
 func init() {
 	viper.SetConfigName("config-online-election-manager")
 	viper.AddConfigPath(".")
-	viper.AddConfigPath("/go")
 
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -68,24 +56,18 @@ func init() {
 	viper.AutomaticEnv()
 
 	switch viper.GetString("ElectionState") {
-	case "VotingNotYetStarted":
+	case VotingNotYetStarted:
 		ElectionState = VotingNotYetStarted
-	case "AcceptingVotes":
+	case AcceptingVotes:
 		ElectionState = AcceptingVotes
-	case "VotingStopped":
+	case VotingStopped:
 		ElectionState = VotingStopped
-	case "ResultsCalculated":
+	case ResultsCalculated:
 		ElectionState = ResultsCalculated
 	default:
 		log.Fatal("ElectionState should be one of {VotingNotYetStarted, AcceptingVotes, VotingStopped, ResultsCalculated}")
 	}
 
-	MailSenderEmailID = viper.GetString("MailSenderEmailID")
-	MailSenderAuthID = viper.GetString("MailSenderAuthID")
-	MailSenderPassword = viper.GetString("MailSenderPassword")
-	MailSignature = viper.GetString("MailSignature")
-	MailSMTPHost = viper.GetString("MailSMTPHost")
-	MailSMTPPort = viper.GetString("MailSMTPPort")
 	MailSuffix = viper.GetString("MailSuffix")
 
 	MongoDialURL = viper.GetString("MongoDialURL")
@@ -94,36 +76,25 @@ func init() {
 	MongoPassword = viper.GetString("MongoPassword")
 	MongoUsingAuth = viper.GetBool("MongoUsingAuth")
 
-	AssetsPath = viper.GetString("AssetsPath")
 	BallotIDsPath = viper.GetString("BallotIDsPath")
-	ImagesPath = viper.GetString("ImagesPath")
 	VotersListPath = viper.GetString("VotersListPath")
 	CandidatesOutputPath = viper.GetString("CandidatesOutputPath")
 	ElectionDataFilePath = viper.GetString("ElectionDataFilePath")
 
 	ApplicationPort = viper.GetString("ApplicationPort")
-	SessionsKey = viper.GetString("SessionsKey")
-	MaxTimeDelay = viper.GetInt("MaxTimeDelay")
 	UsingCaptcha = viper.GetBool("UsingCaptcha")
 
 	RollNumberOfCEO = viper.GetString("RollNumberOfCEO")
-	ElectionName = viper.GetString("ElectionName")
 
 	checkSanity()
 }
 
 func checkSanity() {
-	if err := exists(AssetsPath); err != nil {
-		log.Fatal("Error reading assets path:", err)
-	}
 	if err := exists(BallotIDsPath); err != nil {
 		log.Fatal("Error reading ballotids path")
 	}
 	if err := exists(CandidatesOutputPath); err != nil {
 		log.Fatal("Error reading candidates output path")
-	}
-	if err := exists(ImagesPath); err != nil {
-		log.Fatal("Error reading images path")
 	}
 }
 
