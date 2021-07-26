@@ -45,7 +45,7 @@ var PublicKeyOfCEO string
 
 // Method to read the values of the global variables from environment variables.
 func init() {
-	viper.SetConfigName("config-online-election-manager")
+	viper.SetConfigName("backend-config")
 	viper.AddConfigPath(".")
 
 	err := viper.ReadInConfig()
