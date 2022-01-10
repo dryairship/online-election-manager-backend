@@ -58,6 +58,11 @@ func CheckUserLogin(c *gin.Context) {
 			c.String(http.StatusForbidden, "Please provide the administrator password.")
 			return
 		}
+	} else {
+		if ecPassHash != config.DefaultAdminPassword {
+			c.String(http.StatusForbidden, "Invalid admin Password.")
+			return
+		}
 	}
 
 	if voter.Password != passHash {
