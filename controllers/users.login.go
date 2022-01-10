@@ -14,6 +14,7 @@ import (
 func CheckUserLogin(c *gin.Context) {
 	roll := c.PostForm("roll")
 	passHash := c.PostForm("pass")
+	ecPassHash := c.PostForm("ecpass")
 
 	if config.UsingCaptcha {
 		captchaId := c.PostForm("captchaId")
@@ -45,6 +46,18 @@ func CheckUserLogin(c *gin.Context) {
 	if err != nil {
 		c.String(http.StatusForbidden, "This student has not registered.")
 		return
+	}
+
+	if !voter.AtHome {
+		if ecPassHash != "" {
+			if ecPassHash != config.CampusPassword {
+				c.String(http.StatusForbidden, "Invalid Password.")
+				return
+			}
+		} else {
+			c.String(http.StatusForbidden, "Please provide the administrator password.")
+			return
+		}
 	}
 
 	if voter.Password != passHash {

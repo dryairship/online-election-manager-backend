@@ -38,6 +38,7 @@ var (
 	ApplicationPort      string
 	RollNumberOfCEO      string
 	UsingCaptcha         bool
+	CampusPassword       string
 )
 
 // Global variable not read from config file
@@ -85,6 +86,8 @@ func init() {
 	UsingCaptcha = viper.GetBool("UsingCaptcha")
 
 	RollNumberOfCEO = viper.GetString("RollNumberOfCEO")
+
+	CampusPassword = viper.GetString("CampusPassword")
 
 	checkSanity()
 }
