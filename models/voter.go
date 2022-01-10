@@ -17,6 +17,7 @@ type (
 		Posts    []string   `json:"posts"`
 		SHA1     string     `json:"sha1"`
 		PassXac  string     `json:"passXac"`
+		AtHome   bool       `json:"atHome"`
 	}
 
 	// Struct to represent all the data required to send mail to a user.
@@ -28,9 +29,10 @@ type (
 
 	// Basic structure of a student already present in the database.
 	StudentSkeleton struct {
-		Roll  string `json:"roll"`
-		Email string `json:"email"`
-		Name  string `json:"name"`
+		Roll   string `json:"roll"`
+		Email  string `json:"email"`
+		Name   string `json:"name"`
+		AtHome bool   `json:"atHome"`
 	}
 
 	// Voter model modified to return back to the user.
@@ -42,6 +44,7 @@ type (
 		CEOKey   string     `json:"ceoKey"`
 		State    string     `json:"electionState"`
 		Posts    []string   `json:"posts"`
+		AtHome   bool       `json:"atHome"`
 	}
 )
 
@@ -67,6 +70,7 @@ func (skeleton StudentSkeleton) CreateVoter(authcode string) Voter {
 		Posts:    nil,
 		SHA1:     "",
 		PassXac:  "",
+		AtHome:   skeleton.AtHome,
 	}
 }
 
@@ -80,5 +84,6 @@ func (voter Voter) Simplify() SimplifiedVoter {
 		CEOKey:   config.PublicKeyOfCEO,
 		State:    config.ElectionState,
 		Posts:    voter.Posts,
+		AtHome:   voter.AtHome,
 	}
 }
